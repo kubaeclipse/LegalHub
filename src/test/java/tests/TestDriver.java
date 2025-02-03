@@ -25,6 +25,7 @@ public abstract class TestDriver {
     public void openPage() {
         final var options = new ChromeOptions();
         options.setAcceptInsecureCerts(true);
+        options.addArguments("--headless");
         driver = new ChromeDriver(options);
         driver.get(getInitialUrl());
         driver.manage().window().maximize();

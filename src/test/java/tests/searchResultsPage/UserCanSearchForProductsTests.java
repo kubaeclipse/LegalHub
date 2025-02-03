@@ -1,10 +1,14 @@
 package tests.searchResultsPage;
 
+import config.CredentialsManager;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import pages.HomePage;
 import tests.TestDriver;
 
 import java.util.Arrays;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UserCanSearchForProductsTests extends TestDriver {
     @Override
@@ -13,87 +17,155 @@ public class UserCanSearchForProductsTests extends TestDriver {
     }
 
     @Test
-    public void searchForProductsByProductID() {
-        new HomePage(driver).verifyLogo()
-                .enterUsername("TECHOPS_ADMIN2@fruugo.com")
-                .enterPassword("Techops1111")
-                .clickLogin()
-                .waitForPageToBeLoaded()
+    public void searchForProductByProductIDTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
                 .navigateToManualBlocker()
-                .verifyManualTableHeaders("Product Name")
-                .verifyManualTableHeaders("Retailer")
-                .verifyManualTableHeaders("Creation Time")
-                .verifyManualTableHeaders("Marketplace Countries")
-                .verifyManualTableHeaders("Product Category")
                 .clickSearchProductsButton()
                 .verifySearchModalElements()
                 .enterProductId("48781763")
-                .clickFindProductsButton()
-                .waitForPageToBeLoaded()
-                .verifyProductIdList("48781763");
+                .findProductsByUsingFindProductsButton()
+                .verifyProductId("48781763");
+
     }
 
     @Test
-    public void searchForProductsByMultipleProductIDs() {
-        new HomePage(driver).verifyLogo()
-                .enterUsername("TECHOPS_ADMIN2@fruugo.com")
-                .enterPassword("Techops1111")
-                .clickLogin()
-                .waitForPageToBeLoaded()
+    public void searchForProductsByMultipleProductIDsTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
                 .navigateToManualBlocker()
-                .verifyManualTableHeaders("Product Name")
-                .verifyManualTableHeaders("Retailer")
-                .verifyManualTableHeaders("Creation Time")
-                .verifyManualTableHeaders("Marketplace Countries")
-                .verifyManualTableHeaders("Product Category")
                 .clickSearchProductsButton()
                 .verifySearchModalElements()
                 .enterMultipleProductIds(Arrays.asList("50824868", "3635621", "38125790"))
-                .clickFindProductsButton()
-                .waitForPageToBeLoaded()
-                .verifyProductIdList(Arrays.asList("50824868", "3635621"));
-    }
-    @Test
-    public void searchForProductsBySearchTerm() {
-        new HomePage(driver).verifyLogo()
-                .enterUsername("TECHOPS_ADMIN2@fruugo.com")
-                .enterPassword("Techops1111")
-                .clickLogin()
-                .waitForPageToBeLoaded()
-                .navigateToManualBlocker()
-                .verifyManualTableHeaders("Product Name")
-                .verifyManualTableHeaders("Retailer")
-                .verifyManualTableHeaders("Creation Time")
-                .verifyManualTableHeaders("Marketplace Countries")
-                .verifyManualTableHeaders("Product Category")
-                .clickSearchProductsButton()
-                .verifySearchModalElements()
-                .enterSearchTerm("Folding Camping Chair Padded Potable")
-                .selectExactMatchCheckbox()
-                .clickSearchProductsButton()
-                .waitForPageToBeLoaded()
-                .verifyProductTitleList("Folding Camping Chair Padded Potable");
+                .findProductsByUsingFindProductsButton()
+                .verifyProductIdList(Arrays.asList("50824868", "3635621", "38125790"));
     }
 
     @Test
-    public void searchForProductsByProductImageUrl() {
-        new HomePage(driver).verifyLogo()
-                .enterUsername("TECHOPS_ADMIN2@fruugo.com")
-                .enterPassword("Techops1111")
-                .clickLogin()
-                .waitForPageToBeLoaded()
+    public void searchForProductsBySearchTermTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
                 .navigateToManualBlocker()
-                .verifyManualTableHeaders("Product Name")
-                .verifyManualTableHeaders("Retailer")
-                .verifyManualTableHeaders("Creation Time")
-                .verifyManualTableHeaders("Marketplace Countries")
-                .verifyManualTableHeaders("Product Category")
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Yellowstone Ashford Executive Folding Camping Chair")
+                .selectExactMatchCheckbox()
+                .findProductsBySearchTerm()
+                .verifyProductTitleList("Yellowstone Ashford Executive Folding Camping Chair");
+    }
+
+    @Test
+    public void searchForProductsByProductImageUrlTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
                 .clickSearchProductsButton()
                 .verifySearchModalElements()
                 .enterProductImageUrl("https://img.fruugo.com/product/8/00/147950008_0100_0100.jpg")
-                .clickFindProductsButton()
-                .waitForPageToBeLoaded()
+                .findProductsByUsingFindProductsButton()
                 .verifyProductImageUrlList("https://img.fruugo.com/product/8/00/147950008_0100_0100.jpg");
     }
 
+    @Test
+    public void searchForProductByInvalidProductIDTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterProductId("4878176333333")
+                .findNoProductsByProductIdExpectingError();
+        assertThat(driver.findElement(By.id("textArea_error")).isDisplayed()).isTrue();
+    }
+
+    @Test
+    public void searchForProductsByInvalidSearchTermTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Product which does not exist")
+                .findNoProductsBySearchTermExpectingError();
+        assertThat(driver.findElement(By.id("query_error")).isDisplayed()).isTrue();
+
+    }
+
+    @Test
+    public void enterSearchCriteriaAndCancelTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Any search term")
+                .clickCancelButton()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterProductId("253235323")
+                .clickCancelButton();
+    }
+
+    @Test
+    public void selectAllProductsTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Folding Camping Chair Padded")
+                .findProductsBySearchTerm()
+                .clickSelectAllButton()
+                .verifyNumberOfSelectedCheckboxesEqualsButtonText()
+                .clickClearAllButton()
+                .verifyNumberOfSelectedCheckboxesEqualsButtonText();
+    }
+
+    @Test
+    public void selectRandomProductsTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Folding Camping Chair Padded")
+                .findProductsBySearchTerm()
+                .selectRandomCheckboxes(3)
+                .verifyNumberOfSelectedCheckboxesEqualsButtonText();
+    }
+
+    @Test
+    public void verifyPerPageValuesTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Folding Camping Chair Padded")
+                .findProductsBySearchTerm()
+                .verifyPerPageElements();
+    }
+
+    @Test
+    public void selectValuesPerPageTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Blue shirt")
+                .selectExactMatchCheckbox()
+                .findProductsBySearchTerm()
+                .verifyPerPageElements()
+                .selectNumberOfElementsPerPage("100")
+                .verifyNumberOfElementsOnPage(100)
+                .selectNumberOfElementsPerPage("500")
+                .verifyNumberOfElementsOnPage(500)
+                .selectNumberOfElementsPerPage("50")
+                .verifyNumberOfElementsOnPage(50);
+    }
+
+    @Test
+    public void navigateToPageTest() {
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .navigateToManualBlocker()
+                .clickSearchProductsButton()
+                .verifySearchModalElements()
+                .enterSearchTerm("Blue shirt")
+                .selectExactMatchCheckbox()
+                .findProductsBySearchTerm()
+                .navigateToPageNumber(3)
+                .navigateToPageNumber(4)
+                .navigateToPageNumber(2);
+
+    }
 }

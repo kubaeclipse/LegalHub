@@ -1,8 +1,12 @@
 package tests.homePage;
 
+import config.CredentialsManager;
 import org.junit.jupiter.api.Test;
 import pages.HomePage;
+import pages.MainPage;
 import tests.TestDriver;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UserCanLogInTests extends TestDriver {
     @Override
@@ -11,40 +15,38 @@ public class UserCanLogInTests extends TestDriver {
     }
 
     @Test
-    public void verifyElementsOfTheHomePage() {
-        new HomePage(driver).verifyLogo()
-                .verifyUsernameField()
-                .verifyPasswordField()
-                .verifyLoginButton();
-
+    public void verifyElementsOfTheHomePageTest() {
+        new HomePage(driver).verifyLogoElement()
+                .verifyUsernameFieldElement()
+                .verifyPasswordFieldElement()
+                .verifyLoginButtonElement();
     }
 
     @Test
-    public void verifySuccessfulLoginToLegalHub() {
-        new HomePage(driver).verifyLogo()
-                .enterUsername("TECHOPS_ADMIN2@fruugo.com")
-                .enterPassword("Techops1111")
-                .clickLogin()
-                .waitForPageToBeLoaded();
+    public void verifySuccessfulLoginToLegalHubTest() {
+        new HomePage(driver)
+                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+                .isLoggedIn();
     }
 
     @Test
-    public void verifyUnsuccessfulLoginToLegalHub() {
-        new HomePage(driver).verifyLogo()
+    public void verifyUnsuccessfulLoginToLegalHubTest() {
+        new HomePage(driver).verifyLogoElement()
                 .enterUsername("TEST")
                 .enterPassword("Techops")
                 .verifyInvalidLoginDataMessage();
     }
-    @Test
-    public void verifySigningOutOfLegalHub() {
-        new HomePage(driver).verifyLogo()
-                .enterUsername("TECHOPS_ADMIN2@fruugo.com")
-                .enterPassword("Techops1111")
-                .clickLogin()
-                .waitForPageToBeLoaded()
-                .signOut()
-                .verifyUsernameField()
-                .verifyPasswordField();
 
+    @Test
+    public void verifySigningOutOfLegalHubTest() {
+        MainPage mainPage = new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+
+        assertThat(mainPage.isLoggedIn())
+                .as("User should be logged in successfully")
+                .isTrue();
+
+        mainPage.signOut()
+                .verifyUsernameFieldElement()
+                .verifyPasswordFieldElement();
     }
-};
+}

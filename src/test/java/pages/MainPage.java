@@ -8,10 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class MainPage {
-    private static final By LOGO = By.className("Header_logo__17nja");
     private static final By MANUAL_BLOCKER = By.xpath("//a[span[text()='Manual product blocker']]");
     private static final By IMAGE_BLOCKER = By.xpath("//a[span[text()='Image blocker']]");
     private static final By MY_ACCOUNT = By.className("Footer_button__pavpi");
@@ -31,10 +29,10 @@ public class MainPage {
         return this;
     }
 
-    public MainPage verifyLogo() {
-        assertThat(driver.findElement(LOGO).isDisplayed()).as("Logo is displayed properly").isTrue();
-        return this;
+    public boolean isLoggedIn() {
+        return driver.findElement(MY_ACCOUNT).isDisplayed();
     }
+
 
     public ManualBlockerPage navigateToManualBlocker() {
         driver.findElement(MANUAL_BLOCKER).click();

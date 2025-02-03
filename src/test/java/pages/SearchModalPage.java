@@ -1,23 +1,23 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class SearchModalPage {
 
-    private static final By BLOCK_MODAL = By.cssSelector("div.Modal_content__1bth6");
-    private static final By FIND_PRODUCTS = By.xpath("//button[span[text()='Find Products']]");
-    private static final By SEARCH_PRODUCTS = By.xpath("//div[@class='Dialog_body__1md2z']//button[span[text()='Search Products']]");
-    private static final By CANCEL = By.xpath("//button[span[text()='Cancel']]");
+    private static final By SEARCH_MODAL = By.cssSelector("div.Modal_content__1bth6");
+    private static final By FIND_PRODUCTS_BUTTON = By.xpath("//button[span[text()='Find Products']]");
+    private static final By SEARCH_PRODUCTS_BUTTON = By.xpath("//div[@class='Dialog_body__1md2z']//button[span[text()='Search Products']]");
+    private static final By CANCEL_BUTTON = By.xpath("//button[span[text()='Cancel']]");
     private static final By PRODUCT_FIELD = By.id("textArea");
     private static final By SEARCH_TERM_FIELD = By.id("query");
     private static final By EXACT_MATCH_CHECKBOX = By.className("CustomCheckbox_checkbox__11ho3");
@@ -30,23 +30,25 @@ public class SearchModalPage {
     }
 
 
-    public SearchModalPage waitForPageToBeLoaded() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-        return this;
+    private void assertElementIsDisplayed(By locator, String elementName) {
+        assertThat(driver.findElement(locator).isDisplayed())
+                .as(elementName + " is displayed")
+                .isTrue();
     }
-
     public SearchModalPage verifySearchModalElements() {
-        assertThat(driver.findElement(BLOCK_MODAL).isDisplayed()).as("Modal is displayed").isTrue();
-        assertThat(driver.findElement(FIND_PRODUCTS).isDisplayed()).as("Find Products button is displayed").isTrue();
-        assertThat(driver.findElement(SEARCH_PRODUCTS).isDisplayed()).as("Search Products button is displayed").isTrue();
-        assertThat(driver.findElement(CANCEL).isDisplayed()).as("Cancel button is displayed").isTrue();
-        assertThat(driver.findElement(PRODUCT_FIELD).isDisplayed()).as("Product field is displayed").isTrue();
+        assertElementIsDisplayed(SEARCH_MODAL, "Modal");
+        assertElementIsDisplayed(FIND_PRODUCTS_BUTTON, "Find Products button");
+        assertElementIsDisplayed(SEARCH_PRODUCTS_BUTTON, "Search Products button");
+        assertElementIsDisplayed(CANCEL_BUTTON, "Cancel button");
+        assertElementIsDisplayed(PRODUCT_FIELD, "Product field");
 
         return this;
     }
 
     public SearchModalPage enterProductId(final String productId) {
-        driver.findElement(PRODUCT_FIELD).sendKeys(productId);
+        WebElement productField = driver.findElement(PRODUCT_FIELD);
+        productField.clear();
+        productField.sendKeys(productId);
         return this;
     }
 
@@ -75,18 +77,50 @@ public class SearchModalPage {
         return this;
     }
 
-    public SearchResultsPage clickSearchProductsButton() {
-        driver.findElement(SEARCH_PRODUCTS).click();
+
+    private void handleError(String errorId, String expectedErrorMessage){
+        if (!driver.findElements(By.id(errorId)).isEmpty()) {
+            String errorMessage = driver.findElement(By.id(errorId)).getText();
+            System.out.println(errorMessage);
+            assertThat(errorMessage.contains(expectedErrorMessage));
+        }
+    }
+    public SearchResultsPage findProductsBySearchTerm() {
+        WebElement searchButton = driver.findElement(SEARCH_PRODUCTS_BUTTON);
+        searchButton.click();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.invisibilityOfElementLocated(SEARCH_MODAL));
+
         return new SearchResultsPage(driver);
     }
 
-    public SearchResultsPage clickFindProductsButton() {
-        driver.findElement(FIND_PRODUCTS).click();
+    public SearchResultsPage findProductsByUsingFindProductsButton() {
+        WebElement searchButton = driver.findElement(FIND_PRODUCTS_BUTTON);
+        searchButton.click();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.invisibilityOfElementLocated(SEARCH_MODAL));
+        return new SearchResultsPage(driver);
+    }
+
+    public SearchResultsPage findNoProductsByProductIdExpectingError() {
+        WebElement searchButton = driver.findElement(FIND_PRODUCTS_BUTTON);
+        searchButton.click();
+
+        handleError("textArea_error", "Error: No products found for pasted data: ");
+        return new SearchResultsPage(driver);
+    }
+    public SearchResultsPage findNoProductsBySearchTermExpectingError() {
+        WebElement searchButton = driver.findElement(SEARCH_PRODUCTS_BUTTON);
+        searchButton.click();
+
+        handleError("query_error", "No products found for search term : ");
         return new SearchResultsPage(driver);
     }
 
     public ManualBlockerPage clickCancelButton() {
-        driver.findElement(CANCEL).click();
+        driver.findElement(CANCEL_BUTTON).click();
         return new ManualBlockerPage(driver);
     }
 
