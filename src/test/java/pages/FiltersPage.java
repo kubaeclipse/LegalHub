@@ -48,7 +48,9 @@ public class FiltersPage {
 
     public FiltersPage verifyFilterLabels() {
 
-        WebElement filterElement = driver.findElement(By.className("bB1ki0mb9WKVCcDQc63JSA=="));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement filterElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bB1ki0mb9WKVCcDQc63JSA==")));
+
         String filtersText = filterElement.getText();
         List<String> filterLabels = Arrays.asList(filtersText.split("\\n")); // Splits text based on a new line
 

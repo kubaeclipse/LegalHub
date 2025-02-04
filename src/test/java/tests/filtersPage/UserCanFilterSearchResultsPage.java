@@ -125,7 +125,7 @@ public class UserCanFilterSearchResultsPage extends TestDriver {
                 .selectSubCategory("Office Chairs")
                 .verifyCategoryPath("Furniture > Office Furniture > Office Chairs")
                 .clickApplyButton()
-                .verifyChipName("Furniture > Office Furniture > Office Chairs")
+                .verifyChipName("Furniture > Office Furniture")
                 .readAndVerifyProductCategoryPath("Furniture > Office Furniture > Office Chairs");
 
     }

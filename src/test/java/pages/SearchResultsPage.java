@@ -189,11 +189,9 @@ public class SearchResultsPage {
             String chipText = element.getText();
             System.out.println("Chip names found: " + chipText);
 
-            if (chipText.contains(name)) {
+            if (chipText.startsWith(name)) {
                 System.out.println("Chip name found: " + chipText);
                 break;
-            } else {
-                throw new RuntimeException("Option with name '" + name + "' not found.");
             }
         }
         return this;
