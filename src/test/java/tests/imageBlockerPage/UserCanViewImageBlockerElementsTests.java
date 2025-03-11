@@ -17,8 +17,7 @@ public class UserCanViewImageBlockerElementsTests extends TestDriver {
 
     @Test
     public void verifyImageBlockerElements() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
                 .navigateToImageBlocker()
                 .verifyImageBlockerTitle()
                 .verifyUploadButton()
@@ -28,10 +27,8 @@ public class UserCanViewImageBlockerElementsTests extends TestDriver {
     }
     @Test
     public void verifyManualImageTableElements() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
                 .navigateToImageBlocker()
                 .verifyImageTableHeaders(Arrays.asList("Product Name", "Retailer", "Creation Time", "Marketplace Countries", "Product Category", "Similarity Rating"));
     }
-
 }

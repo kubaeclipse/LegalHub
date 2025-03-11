@@ -18,21 +18,16 @@ public class UserCanFilterSearchResultsPage extends TestDriver {
     @Test
     public void verifyFilterLabelsTest() {
 
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("Wolfmother Album Cover", "Wolfmother Album Cover")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("Wolfmother Album Cover", "Wolfmother Album Cover")
                 .navigateToViewFilters()
                 .verifyFilterLabels();
-
     }
 
     @Test
     public void filterByRetailerName() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("In-dash system A/V", "In-dash system A/V")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("In-dash system A/V", "In-dash system A/V")
                 .navigateToViewFilters()
                 .verifyFilterLabels()
                 .selectRetailerFilter("Eclipse Test Account")
@@ -43,10 +38,8 @@ public class UserCanFilterSearchResultsPage extends TestDriver {
 
     @Test
     public void filterByBrandName() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("Nicola Spring Square Padded French Mattress Dining Chair Cushion Seat Pad", "Nicola Spring Square Padded French Mattress Dining Chair Cushion Seat Pad")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("Nicola Spring Square Padded French Mattress Dining Chair Cushion Seat Pad", "Nicola Spring Square Padded French Mattress Dining Chair Cushion Seat Pad")
                 .navigateToViewFilters()
                 .verifyFilterLabels()
                 .selectBrandFilter("Nicola Spring")
@@ -57,39 +50,32 @@ public class UserCanFilterSearchResultsPage extends TestDriver {
 
     @Test
     public void filterBySelectingMarketplaceCountriesTest() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("Pioneer NABRTS Test Strips", "Pioneer NABRTS Test Strips")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("The Beatles Album by Album by Brian Southall", "The Beatles Album by Album by Brian Southall")
                 .navigateToViewFilters()
                 .verifyFilterLabels()
                 .selectMarketplaceCountriesFromList(Arrays.asList("AU", "FI", "GB"))
                 .clickApplyButton()
                 .verifyChipName("\"AU\", \"FI\", \"GB\"")
                 .readAndVerifyMarketplaceCountryList(Arrays.asList("Australia", "Finland", "United Kingdom"));
-
     }
 
     @Test
     public void filterBySearchingMarketplaceCountriesTest() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("Eclipse 70-14JR Junior Hacksaw", "Eclipse 70-14JR Junior Hacksaw")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("Electric Toothbrush The Paw Patrol Cartoon", "Electric Toothbrush The Paw Patrol Cartoon")
                 .navigateToViewFilters()
                 .verifyFilterLabels()
-                .selectMarketplaceCountriesByEnteringName(Arrays.asList("Australia", "United Kingdom", "United States"))
+                .selectMarketplaceCountriesByEnteringName(Arrays.asList("Austria", "Denmark", "United Kingdom"))
                 .clickApplyButton()
-                .verifyChipName("\"AU\", \"GB\", \"US\"")
-                .readAndVerifyMarketplaceCountryList(Arrays.asList("Australia", "United States", "United Kingdom"));
+                .verifyChipName("\"AT\", \"DE\", \"GB\"")
+                .readAndVerifyMarketplaceCountryList(Arrays.asList("Austria", "Denmark", "United Kingdom"));
     }
 
     @Test
     public void filterBySearchingRetailerCountriesTest() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("Fruit Basket Chrome Round TEST", "Fruit Basket Chrome Round TEST")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("Fruit Basket Chrome Round TEST", "Fruit Basket Chrome Round TEST")
                 .navigateToViewFilters()
                 .verifyFilterLabels()
                 .selectRetailerCountriesByEnteringName(Arrays.asList("United Kingdom"))
@@ -100,36 +86,29 @@ public class UserCanFilterSearchResultsPage extends TestDriver {
 
     @Test
     public void filterBySelectingRetailerCountriesTest() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("Pioneer NABRTS Test Strips", "Pioneer NABRTS Test Strips")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("Enterprise-wide intermediate complexity", "Enterprise-wide intermediate complexity")
                 .navigateToViewFilters()
                 .verifyFilterLabels()
                 .selectRetailerCountriesFromList(Arrays.asList("AU", "FI", "GB"))
                 .clickApplyButton()
                 .verifyChipName("\"AU\", \"FI\", \"GB\"")
                 .readAndVerifyRetailerCountry(Arrays.asList("GB"));
-
     }
 
     @Test
     public void filterByCategoryTest() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
-        new SearchResultsPage(driver)
-                .performSearchAndVerify("Vinsetto 360° Swivel Office Chair", "Vinsetto 360° Swivel Office Chair")
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword());
+        new SearchResultsPage(driver).performSearchAndVerify("Reverse-engineered fault-tolerant open system", "Reverse-engineered fault-tolerant open system")
                 .navigateToViewFilters()
                 .verifyFilterLabels()
-                .enterCategoryPath("Furniture > Office Furniture")
-                .selectSubCategory("Office Chairs")
-                .verifyCategoryPath("Furniture > Office Furniture > Office Chairs")
+                .enterCategoryPath("Puzzles >")
+                .selectSubCategory("Jigsaw Puzzles")
+                .verifyCategoryPath("Toys & Games > Puzzles > Jigsaw Puzzles")
                 .clickApplyButton()
-                .verifyChipName("Furniture > Office Furniture")
-                .readAndVerifyProductCategoryPath("Furniture > Office Furniture > Office Chairs");
-
+                .verifyChipName("Toys & Games > Puzzles")
+                .readAndVerifyProductCategoryPath("Toys & Games > Puzzles > Jigsaw Puzzles");
     }
-
 }
 
 // TO DO:

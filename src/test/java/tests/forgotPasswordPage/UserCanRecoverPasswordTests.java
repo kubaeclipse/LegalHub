@@ -14,27 +14,21 @@ public class UserCanRecoverPasswordTests extends TestDriver {
 
     @Test
     public void navigateBackToHomepageTest() {
-        new HomePage(driver)
-                .verifyLogoElement()
+        new HomePage(driver).verifyLogoElement()
                 .waitForPageToBeLoaded()
                 .clickForgotPassword()
                 .waitForPageToBeLoaded()
                 .clickBackToHomeLink()
                 .verifyLogoElement()
                 .isOnLoginPage();
-
-
     }
 
     @Test
     public void verifyForgotPasswordTest() {
-        new HomePage(driver)
-                .verifyLogoElement()
+        new HomePage(driver).verifyLogoElement()
                 .clickForgotPassword()
                 .waitForPageToBeLoaded()
                 .enterEmailAddress("aaa@example.com")
                 .clickRecoveryLinkButtonAndVerifyMessage();
-
-
     }
 }

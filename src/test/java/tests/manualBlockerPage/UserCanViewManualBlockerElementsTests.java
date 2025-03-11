@@ -16,8 +16,7 @@ public class UserCanViewManualBlockerElementsTests extends TestDriver {
 
     @Test
     public void verifyManualBlockerPageElements() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
                 .navigateToManualBlocker()
                 .verifyLogo()
                 .verifyManualImage()
@@ -27,8 +26,7 @@ public class UserCanViewManualBlockerElementsTests extends TestDriver {
 
     @Test
     public void verifyManualBlockerTableHeaders() {
-        new HomePage(driver)
-                .logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
+        new HomePage(driver).logInToLegalHub(CredentialsManager.getUsername(), CredentialsManager.getPassword())
                 .navigateToManualBlocker()
                 .verifyManualTableHeaders(Arrays.asList("Product Name", "Retailer", "Creation Time", "Marketplace Countries", "Product Category"));
     }

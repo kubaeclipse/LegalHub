@@ -12,12 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ForgotPasswordPage {
 
+    private static final By BACK_TO_HOME = By.xpath("//span[@class='Button_text__egmrm' and text()='Back to Home']");
     private static final By EMAIL_FIELD = By.id("email-address");
-    private static final By RECOVERY_BUTTON = By.xpath("//span[@class='Button_text__wi7ei' and text()='Email Recovery Link']");
-    private static final By BACK_TO_HOME = By.xpath("//span[@class='Button_text__wi7ei' and text()='Back to Home']");
     private static final By EMAIL_MESSAGE = By.cssSelector("#app-mount > div >div > div > p:nth-child(3)");
+    private static final By RECOVERY_BUTTON = By.xpath("//span[@class='Button_text__egmrm' and text()='Email Recovery Link']");
     private static final By USERNAME_FIELD = By.id("username");
-
 
     private final WebDriver driver;
 
@@ -48,7 +47,6 @@ public class ForgotPasswordPage {
                 .isEqualTo("If an account with that email address exists, an email will be sent with further instructions");
         return this;
     }
-
 
     public HomePage clickBackToHomeLink() {
         driver.findElement(BACK_TO_HOME).click();

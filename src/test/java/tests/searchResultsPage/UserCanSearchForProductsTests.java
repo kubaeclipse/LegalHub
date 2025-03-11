@@ -25,7 +25,6 @@ public class UserCanSearchForProductsTests extends TestDriver {
                 .enterProductId("48781763")
                 .findProductsByUsingFindProductsButton()
                 .verifyProductId("48781763");
-
     }
 
     @Test
@@ -34,9 +33,9 @@ public class UserCanSearchForProductsTests extends TestDriver {
                 .navigateToManualBlocker()
                 .clickSearchProductsButton()
                 .verifySearchModalElements()
-                .enterMultipleProductIds(Arrays.asList("50824868", "3635621", "38125790"))
+                .enterMultipleProductIds(Arrays.asList("50824868", "54486481", "38125790"))
                 .findProductsByUsingFindProductsButton()
-                .verifyProductIdList(Arrays.asList("50824868", "3635621", "38125790"));
+                .verifyProductIdList(Arrays.asList("50824868", "54486481", "38125790"));
     }
 
     @Test
@@ -45,10 +44,10 @@ public class UserCanSearchForProductsTests extends TestDriver {
                 .navigateToManualBlocker()
                 .clickSearchProductsButton()
                 .verifySearchModalElements()
-                .enterSearchTerm("Yellowstone Ashford Executive Folding Camping Chair")
+                .enterSearchTerm("For iPhone 5C - iPhone 5S - Battery FPC")
                 .selectExactMatchCheckbox()
                 .findProductsBySearchTerm()
-                .verifyProductTitleList("Yellowstone Ashford Executive Folding Camping Chair");
+                .verifyProductTitleList("For iPhone 5C - iPhone 5S - Battery FPC");
     }
 
     @Test
@@ -82,7 +81,6 @@ public class UserCanSearchForProductsTests extends TestDriver {
                 .enterSearchTerm("Product which does not exist")
                 .findNoProductsBySearchTermExpectingError();
         assertThat(driver.findElement(By.id("query_error")).isDisplayed()).isTrue();
-
     }
 
     @Test
@@ -166,6 +164,5 @@ public class UserCanSearchForProductsTests extends TestDriver {
                 .navigateToPageNumber(3)
                 .navigateToPageNumber(4)
                 .navigateToPageNumber(2);
-
     }
 }

@@ -19,22 +19,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchResultsPage {
 
-    private static final By PRODUCT_ID_ELEMENTS = By.xpath("//td[2]//p[contains(text(), 'Product ID:')]/span");
-    private static final By BRAND_NAMES = By.xpath("//td[2]//p[contains(text(), 'Brand:')]/span");
-    private static final By RETAILER_NAMES = By.xpath("//td[3]//p[contains(text(), 'Name:')]/span");
-    private static final By RETAILER_COUNTRIES = By.xpath("//td[3]//p[contains(text(), 'Country:')]/span");
-    private static final By PRODUCT_TITLE = By.xpath("//div/p/a");
-    private static final By PRODUCT_IMAGE_URL = By.xpath("//div/div/img");
-    private static final By VIEW_FILTERS = By.xpath("//button[span[text()='View Filters']]");
-    private static final By CHIP_NAMES = By.xpath("//span[@class='Chip_text__1as84']");
-    private static final By SELECT_ALL_BUTTON = By.xpath("//div[contains(@class, '_8-1ZzNYLIEADGmz4Td1Swg==')]/button[1]");
-    private static final By SELECTED_BUTTON = By.xpath("//div[contains(@class, '_8-1ZzNYLIEADGmz4Td1Swg==')]/button[2]");
-    private static final By BLOCK_BUTTON = By.xpath("//div[contains(@class, '_8-1ZzNYLIEADGmz4Td1Swg==')]/button[3]");
-    private static final By PRODUCT_CHECKBOXES = By.className("Da5hrQ9o0T+YFdjvcJFvdw==");
-    private static final By PER_PAGE_DROPDOWN = By.id("perPage");
     private static final By ACTIVE_PAGE = By.xpath("//li[contains(@class, 'PageNumbers_active__1t8yb')]//button");
+    private static final By BLOCK_BUTTON = By.xpath("//div[contains(@class, '_8-1ZzNYLIEADGmz4Td1Swg==')]/button[3]");
+    private static final By BRAND_NAMES = By.xpath("//td[2]//p[contains(text(), 'Brand:')]/span");
+    private static final By CHIP_NAMES = By.xpath("//span[@class='Chip_text__1as84']");
     private static final By NO_RESULTS_MESSAGE = By.className("Alert_message__8m4bi");
-
+    private static final By PER_PAGE_DROPDOWN = By.id("perPage");
+    private static final By PRODUCT_CHECKBOXES = By.className("Da5hrQ9o0T+YFdjvcJFvdw==");
+    private static final By PRODUCT_ID_ELEMENTS = By.xpath("//td[2]//p[contains(text(), 'Product ID:')]/span");
+    private static final By PRODUCT_IMAGE_URL = By.xpath("//div/div/img");
+    private static final By PRODUCT_TITLE = By.xpath("//div/p/a");
+    private static final By RETAILER_COUNTRIES = By.xpath("//td[3]//p[contains(text(), 'Country:')]/span");
+    private static final By RETAILER_NAMES = By.xpath("//td[3]//p[contains(text(), 'Name:')]/span");
+    private static final By SELECTED_BUTTON = By.xpath("//div[contains(@class, '_8-1ZzNYLIEADGmz4Td1Swg==')]/button[2]");
+    private static final By SELECT_ALL_BUTTON = By.xpath("//div[contains(@class, '_8-1ZzNYLIEADGmz4Td1Swg==')]/button[1]");
+    private static final By VIEW_FILTERS = By.xpath("//button[span[text()='View Filters']]");
 
     private final WebDriver driver;
 
@@ -42,10 +41,6 @@ public class SearchResultsPage {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
-
-
-
-
 
     public SearchResultsPage performSearchAndVerify(String searchTerm, String expectedTitle) {
         new MainPage(driver)
@@ -61,7 +56,7 @@ public class SearchResultsPage {
     }
 
     public FiltersPage navigateToViewFilters() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement filtersButton = wait.until(ExpectedConditions.visibilityOfElementLocated(VIEW_FILTERS));
         filtersButton.click();
         return new FiltersPage(driver);
@@ -153,7 +148,6 @@ public class SearchResultsPage {
         return this;
     }
 
-
     public SearchResultsPage verifyProductTitleList(String productTitle) {
 
         List<WebElement> productTitleElements = driver.findElements(PRODUCT_TITLE);
@@ -164,7 +158,6 @@ public class SearchResultsPage {
             assertThat(productText).containsIgnoringCase(productTitle);
         }
         return this;
-
     }
 
     public SearchResultsPage verifyProductImageUrlList(String productImageUrl) {
@@ -178,9 +171,7 @@ public class SearchResultsPage {
             assertThat(imageUrl).isEqualTo(productImageUrl);
         }
         return this;
-
     }
-
 
     public SearchResultsPage verifyChipName(String name) {
         List<WebElement> chipElements = driver.findElements(CHIP_NAMES);
@@ -204,7 +195,7 @@ public class SearchResultsPage {
         actions.moveToElement(arrow).perform();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement tooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.Tooltip_tooltip__1hkz0")));
+        WebElement tooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Tooltip_tooltip__z2r95")));
 
         String tooltipText = tooltip.getText();
         String[] countries = tooltipText.split("\n");
@@ -243,7 +234,6 @@ public class SearchResultsPage {
         return this;
     }
 
-
     public int getNumberOfSelectedCheckboxes() {
         return (int) driver.findElements(PRODUCT_CHECKBOXES).stream()
                 .filter(WebElement::isSelected)
@@ -273,7 +263,6 @@ public class SearchResultsPage {
 
         }
         return this;
-
     }
 
     public SearchResultsPage verifyPerPageElements() {
@@ -333,5 +322,4 @@ public class SearchResultsPage {
         button.click();
         return new ManualBlockerPage(driver);
     }
-
 }

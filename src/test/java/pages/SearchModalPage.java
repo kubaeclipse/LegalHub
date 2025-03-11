@@ -14,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchModalPage {
 
-    private static final By SEARCH_MODAL = By.cssSelector("div.Modal_content__1bth6");
-    private static final By FIND_PRODUCTS_BUTTON = By.xpath("//button[span[text()='Find Products']]");
-    private static final By SEARCH_PRODUCTS_BUTTON = By.xpath("//div[@class='Dialog_body__1md2z']//button[span[text()='Search Products']]");
     private static final By CANCEL_BUTTON = By.xpath("//button[span[text()='Cancel']]");
+    private static final By EXACT_MATCH_CHECKBOX = By.className("CustomCheckbox_checkbox__1jzjs");
+    private static final By FIND_PRODUCTS_BUTTON = By.xpath("//button[span[text()='Find Products']]");
     private static final By PRODUCT_FIELD = By.id("textArea");
+    private static final By SEARCH_MODAL = By.cssSelector("div.Modal_content__gcq5h");
+    private static final By SEARCH_PRODUCTS_BUTTON = By.xpath("(//button[span[text()=\"Search Products\"]])[2]");
     private static final By SEARCH_TERM_FIELD = By.id("query");
-    private static final By EXACT_MATCH_CHECKBOX = By.className("CustomCheckbox_checkbox__11ho3");
 
     private final WebDriver driver;
 
@@ -29,12 +29,12 @@ public class SearchModalPage {
         PageFactory.initElements(driver, this);
     }
 
-
     private void assertElementIsDisplayed(By locator, String elementName) {
         assertThat(driver.findElement(locator).isDisplayed())
                 .as(elementName + " is displayed")
                 .isTrue();
     }
+
     public SearchModalPage verifySearchModalElements() {
         assertElementIsDisplayed(SEARCH_MODAL, "Modal");
         assertElementIsDisplayed(FIND_PRODUCTS_BUTTON, "Find Products button");
@@ -49,6 +49,7 @@ public class SearchModalPage {
         WebElement productField = driver.findElement(PRODUCT_FIELD);
         productField.clear();
         productField.sendKeys(productId);
+
         return this;
     }
 
@@ -77,15 +78,16 @@ public class SearchModalPage {
         return this;
     }
 
-
-    private void handleError(String errorId, String expectedErrorMessage){
+    private void handleError(String errorId, String expectedErrorMessage) {
         if (!driver.findElements(By.id(errorId)).isEmpty()) {
             String errorMessage = driver.findElement(By.id(errorId)).getText();
             System.out.println(errorMessage);
             assertThat(errorMessage.contains(expectedErrorMessage));
         }
     }
+
     public SearchResultsPage findProductsBySearchTerm() {
+
         WebElement searchButton = driver.findElement(SEARCH_PRODUCTS_BUTTON);
         searchButton.click();
 
@@ -111,6 +113,7 @@ public class SearchModalPage {
         handleError("textArea_error", "Error: No products found for pasted data: ");
         return new SearchResultsPage(driver);
     }
+
     public SearchResultsPage findNoProductsBySearchTermExpectingError() {
         WebElement searchButton = driver.findElement(SEARCH_PRODUCTS_BUTTON);
         searchButton.click();
@@ -123,6 +126,4 @@ public class SearchModalPage {
         driver.findElement(CANCEL_BUTTON).click();
         return new ManualBlockerPage(driver);
     }
-
-
 }

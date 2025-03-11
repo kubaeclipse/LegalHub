@@ -16,11 +16,10 @@ public class ManualBlockerPage {
 
     private static final By LOGO = By.className("Header_logo__17nja");
     private static final By MANUAL_BLOCKER_TITLE = By.xpath("//div[p[text()='Manual Product Blocker']]");
-    private static final By SEARCH_PRODUCTS_BUTTON = By.xpath("//div[@class='hWYKUw4yiu2Tw89+mPigJw==']//button[span[text()='Search Products']]");
-    private static final By MANUAL_TABLE_HEADERS = By.xpath("//table/thead/tr/th");
     private static final By MANUAL_IMAGE = By.cssSelector("img[alt='Man with magnifying glass against a background of question marks.']");
-    private static final By SEARCH_MODAL = By.cssSelector("div.Modal_content__1bth6");
-
+    private static final By MANUAL_TABLE_HEADERS = By.xpath("//table/thead/tr/th");
+    private static final By SEARCH_MODAL = By.cssSelector("div.Modal_content__gcq5h");
+    private static final By SEARCH_PRODUCTS_BUTTON = By.xpath("//div[@class='hWYKUw4yiu2Tw89+mPigJw==']//button[span[text()='Search Products']]");
 
     private final WebDriver driver;
 
@@ -74,5 +73,4 @@ public class ManualBlockerPage {
         assertThat(searchButton.isDisplayed()).as("Search products button is displayed properly").isTrue();
         return this;
     }
-
 }

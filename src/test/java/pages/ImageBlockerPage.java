@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ImageBlockerPage {
-    private static final By LOGO = By.className("Header_logo__17nja");
     private static final By IMAGE_BLOCKER_TITLE = By.xpath("//div[p[text()='Image Blocker']]");
+    private static final By IMAGE_PICTURE = By.cssSelector("img[alt='Woman cataloguing pictures.']");
+    private static final By IMAGE_TABLE_HEADERS = By.xpath("//table/thead/tr/th");
+    private static final By LOGO = By.className("Header_logo__17nja");
     private static final By UPLOAD_IMAGE_BUTTON = By.xpath("//button//span[text()='Upload Image']");
     private static final By VIEW_FILTERS_BUTTON = By.xpath("//button//span[text()='View Filters']");
-    private static final By IMAGE_TABLE_HEADERS = By.xpath("//table/thead/tr/th");
-    private static final By IMAGE_PICTURE = By.cssSelector("img[alt='Woman cataloguing pictures.']");
     private final WebDriver driver;
 
     public ImageBlockerPage(final WebDriver driver) {
@@ -25,7 +25,7 @@ public class ImageBlockerPage {
         PageFactory.initElements(driver, this);
     }
 
-    public ImageBlockerPage verifyLogo(){
+    public ImageBlockerPage verifyLogo() {
         WebElement logo = driver.findElement(LOGO);
         assertThat(logo.isDisplayed()).as("Logo is displayed").isTrue();
         return this;

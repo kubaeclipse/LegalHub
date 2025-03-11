@@ -15,25 +15,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FiltersPage {
 
-    private static final By FILTERS_HEADER = By.xpath("//h5[@class='Dialog_title__1md2z' and contains(text(),'Manual Search Filters')]");
-    private static final By RETAILER_FIELD = By.id("Retailer name or ID");
+    private static final By APPLY_BUTTON = By.xpath("//button[span[text()=\"Apply\"]]");
     private static final By BRANDS_FIELD = By.id("brands");
-    private static final By COUNTRIES_FIELD = By.className("SearchInput_input__v67os");
-    private static final By MARKETPLACE_COUNTRIES_CLEAR_BUTTON = By.cssSelector("button.SearchInput_clear-icon__v67os");
-    private static final By RETAILER_COUNTRIES_CLEAR_BUTTON = By.cssSelector("button.SearchInput_clear-icon__v67os");
-    private static final By MARKETPLACE_COUNTRIES_DROPDOWN = By.xpath("//div[contains(@class, 'MultiSelect_select__')]//p[contains(text(), 'Select Marketplace Countries')]");
-    private static final By RETAILER_COUNTRIES_DROPDOWN = By.xpath("//div[contains(@class, 'MultiSelect_select__')]//p[contains(text(), 'Select Retailer Countries')]");
-    private static final By CREATION_TIME_START = By.xpath("(//input[@class='BaseDatePicker_input__322rz react-datepicker-ignore-onclickoutside'])[1]");
-    private static final By CREATION_TIME_END = By.xpath("(//input[@class='BaseDatePicker_input__322rz react-datepicker-ignore-onclickoutside'])[2]");
-    private static final By MONTH_DROPDOWN = By.cssSelector(".CustomHeader_select__hkex8:nth-of-type(1)");
-    private static final By YEAR_DROPDOWN = By.cssSelector(".CustomHeader_select__hkex8:nth-of-type(2)");
-    private static final By CATEGORY_TREE = By.className("gJFRVMVYSMBQ8I-lrzTryQ==");
     private static final By CATEGORY_PATH_FIELD = By.id("categoryPath");
-
-    private static final By APPLY_BUTTON = By.cssSelector(".Button_button__wi7ei.Button_solid__wi7ei.Button_primary__wi7ei.Dialog_button__1md2z");
-    private static final By RESET_BUTTON = By.cssSelector(".Button_button__wi7ei.Button_solid__wi7ei.Button_danger__wi7ei Dialog_button__1md2z");
+    private static final By CATEGORY_TREE = By.className("gJFRVMVYSMBQ8I-lrzTryQ==");
     private static final By CLOSE_BUTTON = By.cssSelector(".Button_button__wi7ei.Button_outline__wi7ei.Button_secondary__wi7ei Dialog_button__1md2z");
-    private static final By EMPTY_SPACE = By.cssSelector("[class=Modal_backdrop__1bth6]");
+    private static final By COUNTRIES_FIELD = By.className("SearchInput_input__v67os");
+    private static final By CREATION_TIME_END = By.xpath("(//input[@class='BaseDatePicker_input__322rz react-datepicker-ignore-onclickoutside'])[2]");
+    private static final By CREATION_TIME_START = By.xpath("(//input[@class='BaseDatePicker_input__322rz react-datepicker-ignore-onclickoutside'])[1]");
+    private static final By EMPTY_SPACE = By.cssSelector("[class=Modal_backdrop__gcq5h]");
+    private static final By FILTERS_HEADER = By.xpath("//h5[@class='Dialog_title__1md2z' and contains(text(),'Manual Search Filters')]");
+    private static final By MARKETPLACE_COUNTRIES_CLEAR_BUTTON = By.cssSelector("button.SearchInput_clear-icon__v67os");
+    private static final By MARKETPLACE_COUNTRIES_DROPDOWN = By.xpath("//div[contains(@class, 'MultiSelect_select__')]//p[contains(text(), 'Select Marketplace Countries')]");
+    private static final By MONTH_DROPDOWN = By.cssSelector(".CustomHeader_select__hkex8:nth-of-type(1)");
+    private static final By RESET_BUTTON = By.cssSelector(".Button_button__wi7ei.Button_solid__wi7ei.Button_danger__wi7ei Dialog_button__1md2z");
+    private static final By RETAILER_COUNTRIES_CLEAR_BUTTON = By.cssSelector("button.SearchInput_clear-icon__v67os");
+    private static final By RETAILER_COUNTRIES_DROPDOWN = By.xpath("//div[contains(@class, 'MultiSelect_select__')]//p[contains(text(), 'Select Retailer Countries')]");
+    private static final By RETAILER_FIELD = By.id("Retailer name or ID");
+    private static final By YEAR_DROPDOWN = By.cssSelector(".CustomHeader_select__hkex8:nth-of-type(2)");
 
     private final WebDriver driver;
 
@@ -48,8 +47,8 @@ public class FiltersPage {
 
     public FiltersPage verifyFilterLabels() {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement filterElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bB1ki0mb9WKVCcDQc63JSA==")));
+        WebElement filterElement = new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions
+                .visibilityOfElementLocated(By.className("bB1ki0mb9WKVCcDQc63JSA==")));
 
         String filtersText = filterElement.getText();
         List<String> filterLabels = Arrays.asList(filtersText.split("\\n")); // Splits text based on a new line
@@ -218,7 +217,7 @@ public class FiltersPage {
         actions.moveToElement(categoryElement).perform();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement tooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Tooltip_tooltip__1hkz0")));
+        WebElement tooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Tooltip_tooltip__z2r95")));
 
         String tooltipText = tooltip.getText();
         System.out.println(tooltipText);
