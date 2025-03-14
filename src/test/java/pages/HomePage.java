@@ -14,7 +14,7 @@ public class HomePage {
 
     private static final By FORGOT_PASSWORD_LINK = By.xpath("//a[span[text()='Forgot your password?']]");
     private static final By INVALID_PASSWORD_MESSAGE = By.className("Alert_message__8m4bi");
-    private static final By LOGIN_BUTTON = By.className("Button_text__egmrm");
+    private static final By LOGIN_BUTTON = By.className("Button_text__wi7ei");
     private static final By LOGO = By.className("OE78qEQMDj7l-w1dsy+GGg==");
     private static final By PASSWORD_FIELD = By.id("password");
     private static final By USERNAME_FIELD = By.id("username");
