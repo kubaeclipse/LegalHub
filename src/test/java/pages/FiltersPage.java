@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,24 +72,38 @@ public class FiltersPage {
     }
 
     public FiltersPage selectRetailerFilter(String retailerName) {
-        WebElement retailerField = driver.findElement(RETAILER_FIELD);
-        retailerField.clear();
-        retailerField.sendKeys(retailerName);
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//ul[text()='Loading...']")));
+        int retries = 3;
 
-        List<WebElement> options = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("SelectMenu_options__lzvya")));
+        for (int attempt = 1; attempt <= retries; attempt++) {
+            try {
+                WebElement retailerField = driver.findElement(RETAILER_FIELD);
+                retailerField.clear();
+                retailerField.sendKeys(retailerName);
 
-        return options.stream()
-                .filter(option -> option.getText().trim().startsWith(retailerName))
-                .findFirst()
-                .map(option -> {
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//ul[text()='Loading...']")));
+
+                List<WebElement> options = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("SelectMenu_options__lzvya")));
+
+                Optional<WebElement> matchingOption = options.stream()
+                        .filter(option -> option.getText().trim().startsWith(retailerName))
+                        .findFirst();
+
+                if (matchingOption.isPresent()) {
+                    WebElement option = matchingOption.get();
                     wait.until(ExpectedConditions.elementToBeClickable(option)).click();
                     return this;
-                })
-                .orElseThrow(() -> new NoSuchElementException("Retailer '" + retailerName + "' not found."));
-
+                } else {
+                    throw new NoSuchElementException("Retailer '" + retailerName + "' not found.");
+                }
+            } catch (NoSuchElementException | TimeoutException e) {
+                System.out.println("Attempt " + attempt + " failed. Retrying...");
+                if (attempt == retries) {
+                    throw new RuntimeException("Failed to select retailer after " + retries + " attempts", e);
+                }
+            }
+        }
+        return this;
     }
 
     public FiltersPage selectBrandFilter(String brandName) {
