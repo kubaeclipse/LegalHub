@@ -1,5 +1,7 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FiltersPage {
+
+    Logger logger = LogManager.getRootLogger();
 
     private static final By APPLY_BUTTON = By.xpath("//button[span[text()=\"Apply\"]]");
     private static final By BRANDS_FIELD = By.id("brands");
@@ -97,7 +101,7 @@ public class FiltersPage {
                     throw new NoSuchElementException("Retailer '" + retailerName + "' not found.");
                 }
             } catch (NoSuchElementException | TimeoutException e) {
-                System.out.println("Attempt " + attempt + " failed. Retrying...");
+                logger.info("Attempt " + attempt + " failed. Retrying...");
                 if (attempt == retries) {
                     throw new RuntimeException("Failed to select retailer after " + retries + " attempts", e);
                 }
@@ -124,7 +128,7 @@ public class FiltersPage {
                 ));
 
                 String optionText = option.getText();
-                System.out.println("Checking: " + optionText);
+                logger.info("Checking: " + optionText);
 
                 if (optionText.equals(brandName)) {
                     option.click();
@@ -211,9 +215,9 @@ public class FiltersPage {
     public FiltersPage selectSubCategory(String subcategory) {
         List<WebElement> suggestions = driver.findElements(By.xpath("//div[@class='_8MaHoyZq6ZjR6D-elV2RiA==']//button"));
         for (WebElement suggestion : suggestions) {
-            System.out.println(suggestion.getText());
+            logger.info(suggestion.getText());
             if (suggestion.getText().equals(subcategory)) {
-                System.out.println("Selected category: " + suggestion.getText());
+                logger.info("Selected category: " + suggestion.getText());
                 suggestion.click();
                 break;
             }
@@ -235,7 +239,7 @@ public class FiltersPage {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.className("Tooltip_tooltip__z2r95")));
 
         String tooltipText = tooltip.getText();
-        System.out.println(tooltipText);
+        logger.info(tooltipText);
 
         assertEquals(categoryPath, tooltipText);
 

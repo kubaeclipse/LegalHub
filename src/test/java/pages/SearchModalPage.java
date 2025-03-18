@@ -1,5 +1,7 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchModalPage {
 
+    private Logger logger = LogManager.getRootLogger();
     private static final By CANCEL_BUTTON = By.xpath("//button[span[text()='Cancel']]");
     private static final By EXACT_MATCH_CHECKBOX = By.className("CustomCheckbox_checkbox__1jzjs");
     private static final By FIND_PRODUCTS_BUTTON = By.xpath("//button[span[text()='Find Products']]");
@@ -81,7 +84,7 @@ public class SearchModalPage {
     private void handleError(String errorId, String expectedErrorMessage) {
         if (!driver.findElements(By.id(errorId)).isEmpty()) {
             String errorMessage = driver.findElement(By.id(errorId)).getText();
-            System.out.println(errorMessage);
+            logger.info(errorMessage);
             assertThat(errorMessage.contains(expectedErrorMessage));
         }
     }

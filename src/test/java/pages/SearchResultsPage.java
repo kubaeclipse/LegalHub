@@ -1,5 +1,7 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
@@ -18,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchResultsPage {
+
+    private Logger logger = LogManager.getRootLogger();
 
     private static final By ACTIVE_PAGE = By.xpath("//li[contains(@class, 'PageNumbers_active__1t8yb')]//button");
     private static final By BLOCK_BUTTON = By.xpath("//div[contains(@class, '_8-1ZzNYLIEADGmz4Td1Swg==')]/button[3]");
@@ -72,7 +76,7 @@ public class SearchResultsPage {
             productIdList.add(productText);
         }
 
-        System.out.println("Product IDs found: " + productIdList);
+        logger.info("Product IDs found: " + productIdList);
         assertThat(productIdList).as("List of product IDs contains a proper value").contains(productId);
         return this;
     }
@@ -86,10 +90,10 @@ public class SearchResultsPage {
             brandNames.add(brandText);
         }
         if (brandNames.isEmpty()) {
-            System.out.println("No brand name found");
-            System.out.println(driver.findElement(NO_RESULTS_MESSAGE).getText());
+            logger.info("No brand name found");
+            logger.info(driver.findElement(NO_RESULTS_MESSAGE).getText());
         } else {
-            System.out.println("Brand names found: " + brandNames);
+            logger.info("Brand names found: " + brandNames);
             assertThat(brandNames).as("List of brand names contains a proper value").contains(brandName);
         }
         return this;
@@ -104,10 +108,10 @@ public class SearchResultsPage {
             retailerNames.add(retailerText);
         }
         if (retailerNames.isEmpty()) {
-            System.out.println("No retailer name found");
-            System.out.println(driver.findElement(NO_RESULTS_MESSAGE).getText());
+            logger.info("No retailer name found");
+            logger.info(driver.findElement(NO_RESULTS_MESSAGE).getText());
         } else {
-            System.out.println("Retailer names found: " + retailerNames);
+            logger.info("Retailer names found: " + retailerNames);
             assertThat(retailerNames).as("List of retailer names contains a proper value").contains(retailerName);
         }
 
@@ -123,10 +127,10 @@ public class SearchResultsPage {
             retailerCountries.add(retailerText);
         }
         if (retailerCountries.isEmpty()) {
-            System.out.println("No retailer country found");
-            System.out.println(driver.findElement(NO_RESULTS_MESSAGE).getText());
+            logger.info("No retailer country found");
+            logger.info(driver.findElement(NO_RESULTS_MESSAGE).getText());
         } else {
-            System.out.println("Retailer countries found: " + retailerCountries);
+            logger.info("Retailer countries found: " + retailerCountries);
             assertThat(retailerCountries).as("List of retailer countries contains a proper value").containsAll(retailerList);
         }
 
@@ -143,7 +147,7 @@ public class SearchResultsPage {
             productIdList.add(productText);
         }
 
-        System.out.println("Product IDs found: " + productIdList);
+        logger.info("Product IDs found: " + productIdList);
         assertThat(productIdList).as("List of product IDs contains a proper value").containsAll(productIds);
         return this;
     }
@@ -154,7 +158,7 @@ public class SearchResultsPage {
 
         for (WebElement element : productTitleElements) {
             String productText = element.getText();
-            //System.out.println("Product titles found: " + productText);
+            logger.info("Product titles found: " + productText);
             assertThat(productText).containsIgnoringCase(productTitle);
         }
         return this;
@@ -167,7 +171,7 @@ public class SearchResultsPage {
 
         for (WebElement element : productTitleElements) {
             String imageUrl = element.getAttribute("src");
-            //System.out.println("Product titles found: " + imageUrl);
+            logger.info("Product titles found: " + imageUrl);
             assertThat(imageUrl).isEqualTo(productImageUrl);
         }
         return this;
@@ -178,10 +182,10 @@ public class SearchResultsPage {
 
         for (WebElement element : chipElements) {
             String chipText = element.getText();
-            System.out.println("Chip names found: " + chipText);
+            logger.info("Chip names found: " + chipText);
 
             if (chipText.startsWith(name)) {
-                System.out.println("Chip name found: " + chipText);
+                logger.info("Chip name found: " + chipText);
                 break;
             }
         }
@@ -201,7 +205,7 @@ public class SearchResultsPage {
         String[] countries = tooltipText.split("\n");
 
         for (String country : countries) {
-            System.out.println(country);
+            logger.info(country);
             assertTrue(Arrays.asList(countries).containsAll(countryList));
         }
 
@@ -212,7 +216,7 @@ public class SearchResultsPage {
 
         for (int i = 1; i < driver.findElements(PRODUCT_CHECKBOXES).size(); i++) {
             WebElement element = driver.findElement(By.xpath("//div/table/tbody/tr[" + i + "]/td[6]/span"));
-            System.out.println(element.getText());
+            logger.info(element.getText());
             assertTrue(element.getText().contains(categoryPath));
 
         } return this;
@@ -242,10 +246,10 @@ public class SearchResultsPage {
 
     public SearchResultsPage verifyNumberOfSelectedCheckboxesEqualsButtonText() {
         int selectedCheckboxes = getNumberOfSelectedCheckboxes();
-        System.out.println(selectedCheckboxes);
+        logger.info(selectedCheckboxes);
         String buttonText = driver.findElement(SELECTED_BUTTON).getText();
         int productsToSelect = Integer.parseInt(buttonText.split("/")[0].replaceAll("\\D", ""));
-        System.out.println(productsToSelect);
+        logger.info(productsToSelect);
         assertEquals(selectedCheckboxes, productsToSelect);
         return this;
     }
@@ -273,13 +277,13 @@ public class SearchResultsPage {
         for (WebElement option : options) {
             String optionText = (option.getText());
             pageCount.add(optionText);
-            System.out.println(option.getText());
+            logger.info(option.getText());
         }
 
         List<String> expectedPageCount = List.of("50", "100", "500");
 
-        System.out.println("Actual values: " + pageCount);
-        System.out.println("Expected values: " + expectedPageCount);
+        logger.info("Actual values: " + pageCount);
+        logger.info("Expected values: " + expectedPageCount);
 
         assertThat(expectedPageCount).isEqualTo(pageCount);
         return this;
@@ -295,7 +299,7 @@ public class SearchResultsPage {
 
     public SearchResultsPage verifyNumberOfElementsOnPage(int expectedNumberOfElements) {
         int numberOfElements = driver.findElements(PRODUCT_CHECKBOXES).size();
-        System.out.println("Number of elements on page: " + numberOfElements);
+        logger.info("Number of elements on page: " + numberOfElements);
         assertEquals(expectedNumberOfElements, numberOfElements);
         return this;
     }
