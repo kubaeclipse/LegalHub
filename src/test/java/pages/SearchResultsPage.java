@@ -288,8 +288,8 @@ public class SearchResultsPage {
     public SearchResultsPage selectNumberOfElementsPerPage(String value) {
         Select select = new Select(driver.findElement(PER_PAGE_DROPDOWN));
         select.selectByValue(value);
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(PRODUCT_CHECKBOXES));
+        new WebDriverWait(driver,Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(PRODUCT_CHECKBOXES));
         return this;
     }
 
@@ -309,8 +309,8 @@ public class SearchResultsPage {
     public SearchResultsPage navigateToPageNumber(int pageNumber) {
         driver.findElement(By.xpath("//li/button[@aria-label='Go to page " + pageNumber + "']")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(PRODUCT_CHECKBOXES));
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(PRODUCT_CHECKBOXES));
         assertTrue(isOnPage(pageNumber));
 
         return this;

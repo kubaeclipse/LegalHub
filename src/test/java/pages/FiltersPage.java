@@ -113,7 +113,6 @@ public class FiltersPage {
         brandField.sendKeys(brandName);
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//ul[text()='Loading...']")));
 
         int index = 1;
@@ -190,9 +189,6 @@ public class FiltersPage {
         return this;
     }
 
-
-
-
     public FiltersPage selectCreationTime(String day, String month, String year) {
         driver.findElement(CREATION_TIME_START).click();
         new Select(driver.findElement(MONTH_DROPDOWN)).selectByValue(month);
@@ -206,12 +202,13 @@ public class FiltersPage {
         categoryField.click();
         categoryField.sendKeys(categoryPath);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(CATEGORY_TREE));
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(CATEGORY_TREE));
 
         return this;
     }
-    public FiltersPage selectSubCategory(String subcategory){
+
+    public FiltersPage selectSubCategory(String subcategory) {
         List<WebElement> suggestions = driver.findElements(By.xpath("//div[@class='_8MaHoyZq6ZjR6D-elV2RiA==']//button"));
         for (WebElement suggestion : suggestions) {
             System.out.println(suggestion.getText());
@@ -221,6 +218,9 @@ public class FiltersPage {
                 break;
             }
         }
+        WebElement emptySpace = driver.findElement(EMPTY_SPACE);
+        emptySpace.click();
+
         return this;
     }
 
@@ -231,8 +231,8 @@ public class FiltersPage {
         Actions actions = new Actions(driver);
         actions.moveToElement(categoryElement).perform();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement tooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Tooltip_tooltip__z2r95")));
+        WebElement tooltip = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.className("Tooltip_tooltip__z2r95")));
 
         String tooltipText = tooltip.getText();
         System.out.println(tooltipText);
